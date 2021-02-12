@@ -1,7 +1,6 @@
 import pygame, sys, math
 from pygame.locals import *
 import Cube
-from Matrix import Matrix
 from Camera import Camera
     
 SCREEN = (1600, 1000)
