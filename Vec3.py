@@ -27,3 +27,6 @@ class Vec3():
 		self.x /= getLen(self.x)
 		self.y /= getLen(self.y)
 		self.z /= getLen(self.z)
+
+	def vec(self):
+		return [[self.x], [self.y], [self.z], [self.w]] 

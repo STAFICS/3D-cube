@@ -22,7 +22,7 @@ class Matrix():
 						matrix[2][0] * vec.x + matrix[2][1] * vec.y + matrix[2][2] * vec.z + matrix[2][3] * vec.w,
 						matrix[3][0] * vec.x + matrix[3][1] * vec.y + matrix[3][2] * vec.z + matrix[3][3] * vec.w)
 
-	def getRotationX(self, angle):
+	def getRotationX(angle):
 		rad = math.pi / 180 * angle
 		return 	[
 				[1, 0, 0, 0],
@@ -31,7 +31,7 @@ class Matrix():
 				[0, 0, 0, 1],
 				]
 
-	def getRotationY(self, angle):
+	def getRotationY(angle):
 		rad = math.pi / 180 * angle;
 		return 	[
 				[math.cos(rad), 0, math.sin(rad), 0],
@@ -40,7 +40,7 @@ class Matrix():
 				[0, 0, 0, 1],
 	    		]
 
-	def getRotationZ(self, angle):
+	def getRotationZ(angle):
 		rad = math.pi / 180 * angle;
 		return 	[
 				[math.cos(rad), -math.sin(rad), 0, 0],
@@ -49,7 +49,7 @@ class Matrix():
 				[0, 0, 0, 1],
 				]
 
-	def getTranslation(self, dx, dy, dz):
+	def getTranslation(dx, dy, dz):
 		return 	[
 				[1, 0, 0, dx],
 				[0, 1, 0, dy],
@@ -57,10 +57,27 @@ class Matrix():
 				[0, 0, 0, 1],
 				]
 
-	def getScale(self, sx, sy, sz):
+	def getScale(sx, sy, sz):
 		return 	[
 				[sx, 0, 0, 0],
 				[0, sy, 0, 0],
 				[0, 0, sz, 0],
 				[0, 0, 0, 1],
+				]
+
+	def getProjection(fov, f, n):
+		S = 1 / math.tan(fov * 0.5 * math.pi / 180)
+		return 	[
+				[S, 0, 0, 0],
+				[0, S, 0, 0],
+				[0, 0, -(f/(f-n)), -1],
+				[0, 0, -(f*n/(f-n)), 0],
+				]
+
+	def toScreen(width, height):
+		return 	[
+				[width/2, 0, 0, width/2],
+				[0, -height/2, 0, height/2],
+				[0, 0, 0, 0],
+				[0, 0, 0, 0],
 				]
