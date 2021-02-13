@@ -14,10 +14,10 @@ class Cube():
                         Vec3(1,-1,-1),
                         Vec3(-1,-1,-1),
                         Vec3(-1,-1,1)]
+        self.edges = [[0,1],[1,2],[2,3],[3,7],[7,6],[6,5],[5,4],[4,7],[4,0],[5,1],[6,2],[3,0]]
         self.world = self.points
         self.camera = []
-        self.edges = [[0,1],[1,2],[2,3],[3,7],[7,6],[6,5],[5,4],[4,7],[4,0],[5,1],[6,2],[3,0]]
-        self.perspective = []
+        self.screen = []
 
     def rotZ(self, angle):
         radian = angle * math.pi / 180
@@ -73,13 +73,3 @@ class Cube():
         for point in range(len(self.points)):
             points.append(Vec3(self.points[point].x + self.position.x, self.points[point].y + self.position.y, self.points[point].z + self.position.z))
         return points
-
-
-        # points = []
-        # for point in range(len(self.points)):
-        #     tmp_point = []
-        #     tmp_point.append(self.points[point][0] + self.position[0])
-        #     tmp_point.append(self.points[point][1] + self.position[1])
-        #     tmp_point.append(self.points[point][2] + self.position[2])
-        #     points.append(tmp_point)
-        # return points

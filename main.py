@@ -36,6 +36,8 @@ def main():
         drawCoord(windowSurface, SCREEN, RED)
         check_keys(camera)
         camera.cam_pos(cube)
+        camera.projection(60, 100, 0.1, cube)
+        # camera.toScreen(cube, SCREEN)
         proection(cube)
 
 
@@ -43,9 +45,10 @@ def main():
         FPSCLOCK.tick(FPS)
 
 def proection(obj):
-    for point in obj.camera:
-        pygame.draw.circle(windowSurface, RED, (800 + (point.x / (point.z*0.5)) * 100, 
-                                                500 + (point.y / (point.z*0.5)) * 100), 3)
+    for point in obj.projection:
+        pygame.draw.circle(windowSurface, RED, (800 + point.x, 
+                                                500 + point.y), 3)
+    print(obj.projection[0])
 
 
 def drawDot(obj):

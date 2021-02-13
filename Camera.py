@@ -61,4 +61,26 @@ class Camera():
 		for point in obj.world:
 			coord_cam = Tinv.dot(np.array(point.vec()))
 			obj.camera.append(Vec3(coord_cam[0][0], coord_cam[1][0], coord_cam[2][0]))
-		
+
+
+	def projection(self, fov, f, n, obj):
+		S = 1 / (np.tan(fov*0.5*(np.pi/180)))
+		P = np.array([[S, 0, 0, 0], [0, S, 0, 0], [0, 0, (f/(f-n)), -1], [0, 0, ((f * n)/(f - n)), 0]])
+		obj.projection = []
+		for point in obj.camera:
+			v = P.dot(np.array(point.vec()))
+			vec = Vec3(v[0][0]/v[3][0],v[1][0]/v[3][0],v[2][0]/v[3][0])
+			obj.projection.append(vec)
+
+	def toScreen(self, obj, screen):
+		hW = screen[0] / 2
+		hH = screen[1] / 2
+		toScreen = np.array([	[hW, 0, 0, hW],
+								[0, -hH, 0, hW],
+								[0,0,1,0],
+								[0,0,0,1]]).T
+		obj.screen = []
+		for point in obj.projection:
+			v = toScreen.dot(point.vec())
+			vec = Vec3(v[0][0]/v[3][0],v[1][0]/v[3][0],v[2][0]/v[3][0])
+			obj.screen.append(vec)
