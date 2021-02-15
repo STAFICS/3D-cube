@@ -1,82 +1,38 @@
-import pygame, sys, math
-from pygame.locals import *
-import Cube
-from Camera import Camera
-    
-SCREEN = (1600, 1000)
-mid = [SCREEN[0] / 2, SCREEN[1] / 2]
-CELLSIZE = 20
-FPS = 15
-    
-BLACK = (0, 0, 0)
-WHITE = (255, 255, 255)
-RED = (255, 0, 0)
-GREEN = (0, 255, 0)
-BLUE = (0, 0, 255)
+from camera import *
+from object import *
+from projection import *
 
 
-windowSurface = pygame.display.set_mode(SCREEN, 0, 32)
-pygame.display.set_caption("Caption")
+class Render:
+    def __init__(self, width, height):
+        self.SCREEN = self.WIDTH, self.HEIGHT = width, height
+        self.H_WIDTH, self.H_HEIGHT = self.WIDTH // 2, self.HEIGHT // 2
+        self.FPS = 60
+        self.screen = pg.display.set_mode(self.SCREEN)
+        self.clock = pg.time.Clock()
+        self.create_object()
+        pg.init()
+
+    def create_object(self):
+        self.object = Object(self)
+        self.camera = Camera(self, [0.5, 1, -5])
+        self.projection = Projection(self)
+        self.object.translate([0, 0.5, 0])
+        self.object.rotate_y(math.pi / 6)
+
+    def draw(self):
+        self.screen.fill(pg.Color('darkslategray'))
+        self.object.draw()
+
+    def run(self):
+        while True:
+            self.draw()
+            [exit() for i in pg.event.get() if i.type == pg.QUIT]
+            pg.display.set_caption(str(self.clock.get_fps()))
+            pg.display.flip()
+            self.clock.tick(self.FPS)
 
 
-def main():
-    cube = Cube.Cube()
-    camera = Camera()
-    while True:
-        for event in pygame.event.get():
-            if event.type == QUIT:
-                pygame.quit()
-                sys.exit()
-        
-        pygame.init()
-        FPSCLOCK = pygame.time.Clock()
-        
-        windowSurface.fill(WHITE)
-        
-        drawCoord(windowSurface, SCREEN, RED)
-        check_keys(camera)
-        camera.cam_pos(cube)
-        camera.projection(60, 100, 0.1, cube)
-        # camera.toScreen(cube, SCREEN)
-        proection(cube)
-
-
-        pygame.display.update()
-        FPSCLOCK.tick(FPS)
-
-def proection(obj):
-    for point in obj.projection:
-        pygame.draw.circle(windowSurface, RED, (800 + point.x, 
-                                                500 + point.y), 3)
-    print(obj.projection[0])
-
-
-def drawDot(obj):
-    for point in obj.world:
-        pygame.draw.circle(windowSurface, RED, (point.x, point.y), 3)
-
-
-def check_keys(obj):
-    keys = pygame.key.get_pressed()
-    if keys[pygame.K_RIGHT]:
-        obj.pos(1,0,0)
-    if keys[pygame.K_LEFT]:
-        obj.pos(-1,0,0)
-    if keys[pygame.K_UP]:
-        obj.pos(0,0,0.1)
-    if keys[pygame.K_DOWN]:
-        obj.pos(0,0,-0.1)
-    if keys[pygame.K_d]:
-        obj.rotZ(1)
-    if keys[pygame.K_s]:
-        obj.rotX(1)
-    if keys[pygame.K_q]:
-        obj.rotY(1)
-
-
-def drawCoord(surface, screen, color):
-    pygame.draw.line(surface, color, (0, screen[1] / 2),(screen[0], screen[1] / 2))
-    pygame.draw.line(surface, color, (screen[0] / 2, 0),(screen[0] / 2, screen[1]))
-
-
-main()
+if __name__ == '__main__':
+    app = Render(1600, 900)
+    app.run()
